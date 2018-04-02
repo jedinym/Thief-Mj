@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PickupsHullController : MonoBehaviour {
@@ -44,14 +45,16 @@ public class PickupsHullController : MonoBehaviour {
         //    //new Vector3(-20, -20)
         //};
 
-        List<Vector3> SpawnSpotVectors = new List<Vector3>();
-        List<GameObject> SpawnSpotObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("SpawnSpot"));
+        //List<Vector3> SpawnSpotVectors = new List<Vector3>();
+        //List<GameObject> SpawnSpotObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("SpawnSpot"));
 
-        foreach (GameObject SpawnSpot in SpawnSpotObjects)
-        {
-            SpawnSpotVectors.Add(SpawnSpot.transform.localPosition);
-            print(SpawnSpot.transform.localPosition);
-        }
+        //foreach (GameObject SpawnSpot in SpawnSpotObjects)
+        //{
+        //    SpawnSpotVectors.Add(SpawnSpot.transform.localPosition);
+        //    //print(SpawnSpot.transform.localPosition);
+        //}
+
+        List<Vector3> SpawnSpotVectors = (from go in GameObject.FindGameObjectsWithTag("SpawnSpot") select go.transform.position).ToList();
 
         return SpawnSpotVectors;
     }
@@ -98,7 +101,10 @@ public class PickupsHullController : MonoBehaviour {
         }
         else
         {
-            //*if generated spot is not valid, do nothing
+            if (GameObject.FindGameObjectsWithTag("PickupsShell").Count() < GameObject.FindGameObjectsWithTag("SpawnSpot").Count()) //To avoid StackOverflowException because of Calls when there are not any SpawnSpots left
+            {
+                SpawnPickupsShellClone();
+            }
         }
     }
 
