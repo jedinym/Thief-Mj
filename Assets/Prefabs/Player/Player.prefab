@@ -167,7 +167,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1452093159325650}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children:
@@ -413,9 +413,10 @@ MonoBehaviour:
   pressDown: 32
   pressLeft: 97
   pressRight: 100
-  MoveForwardSpeed: 20
+  MoveForwardSpeed: 1500
   MoveBackwardSpeed: 5
-  RotateSpeed: 200
+  RotateSpeed: 300
+  DashSpeed: 200
 --- !u!114 &114416390804044600
 MonoBehaviour:
   m_ObjectHideFlags: 1

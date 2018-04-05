@@ -12,6 +12,7 @@ public class PlayerMovementController : MonoBehaviour {
     public float MoveForwardSpeed;
     public float MoveBackwardSpeed;
     public float RotateSpeed;
+    public float DashSpeed;
     bool IsDashing;
 
 
@@ -21,10 +22,17 @@ public class PlayerMovementController : MonoBehaviour {
     int doBurstFwdHash;
     int doBurstBwdHash;
 
+    float InputForward;
+    float InputRotate;
+    float InputDash;
+    bool IsDashAxisInUse;
+    bool UseDashMove;
+
+    float LastPauseTime;
+
     // Use this for initialization
     void Start()
     {
-
         Rb2d = GetComponent<Rigidbody2D>();
 
         animator = GetComponent<Animator>();
@@ -34,67 +42,88 @@ public class PlayerMovementController : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    {
-        if (Rb2d.velocity.magnitude < 9f)
+    { 
+        InputForward = Input.GetAxisRaw("Vertical"); //Forward and backwards
+        InputRotate = Input.GetAxisRaw("Horizontal"); //Rotation 
+        if (Input.GetButtonDown("Dash")) //Dashing
+            UseDashMove = true;
+
+        if (Input.GetButtonDown("Pause")) //Pause game
         {
-            IsDashing = false;
+            if (Time.timeScale == 1)
+            {
+                LastPauseTime = Time.unscaledTime;
+                Time.timeScale = 0;
+            }
+            else
+            {
+                if (Time.timeScale == 0 && Time.unscaledTime - LastPauseTime > 0.1) //If time from pause is unchecked game does't pause
+                    Time.timeScale = 1;
+            }
         }
+
+        if (IsDashing && Rb2d.velocity.magnitude < 9f)
+            IsDashing = false;
+
+        if (InputForward > 0)
+            animator.SetTrigger(doBurstFwdHash);
+
+        if (InputForward < 0)
+            animator.SetTrigger(doBurstBwdHash);
+
 
         //print(Rb2d.velocity.magnitude);
     }
 
     private void FixedUpdate()
     {
-        if (!GlobalVariables.IsGameOver)
+        if (!IsDashing)
         {
-            if (Input.GetKey(pressUp))
-            {
-                Rb2d.AddForce(transform.up * MoveForwardSpeed);
-                animator.SetTrigger(doBurstFwdHash);
-            }
-
-            if (Input.GetKey(pressDown))
-            {
-                Rb2d.AddForce(-transform.up * MoveBackwardSpeed);
-                animator.SetTrigger(doBurstBwdHash);
-            }
-
-            if (!IsDashing)
-            {
-                if (Input.GetKey(pressLeft))
-                    transform.Rotate(Vector3.forward * RotateSpeed * Time.deltaTime);
-
-                if (Input.GetKey(pressRight))
-                    transform.Rotate(Vector3.back * RotateSpeed * Time.deltaTime);
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftShift)) // FIX LATER; INPUT IN UPDATE & ACTION IN FIXEDUPDATE
-                Dash();
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-                Time.timeScale = 0;
-
-            //if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0)
-            //    Time.timeScale = 1;
+            Rb2d.AddForce(transform.up * InputForward * MoveForwardSpeed * Time.deltaTime); //if input is 0 dont move at all // Move forward speed and backwards are the same here
+            transform.Rotate(Vector3.forward * InputRotate * RotateSpeed * Time.deltaTime, Space.World); //if input is 0 dont move at all
         }
+
+        if (UseDashMove)
+            Dash();
+
+        //if (!GlobalVariables.IsGameOver)
+        //{
+        //    if (Input.GetKey(pressUp))
+        //    {
+        //        Rb2d.AddForce(transform.up * MoveForwardSpeed);
+        //        animator.SetTrigger(doBurstFwdHash);
+        //    }
+
+        //    if (Input.GetKey(pressDown))
+        //    {
+        //        Rb2d.AddForce(-transform.up * MoveBackwardSpeed);
+        //        animator.SetTrigger(doBurstBwdHash);
+        //    }
+
+        //    if (!IsDashing)
+        //    {
+        //        if (Input.GetKey(pressLeft))
+        //            transform.Rotate(Vector3.forward * RotateSpeed * Time.deltaTime);
+
+        //        if (Input.GetKey(pressRight))
+        //            transform.Rotate(Vector3.back * RotateSpeed * Time.deltaTime);
+        //    }
+
+        //    if (Input.GetKeyDown(KeyCode.LeftShift)) // FIX LATER; INPUT IN UPDATE & ACTION IN FIXEDUPDATE
+        //        Dash();
+
+        //    if (Input.GetKeyDown(KeyCode.Escape))
+        //        Time.timeScale = 0;
+
+        //    //if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0)
+        //    //    Time.timeScale = 1;
+        //}
     }
 
     private void Dash()
     {
-        //GetComponent<LimitSpeed>().MaxSpeed += 20;
-        //MoveForwardSpeed += 50;
-        //ResetMoveForwardSpeedAfterTime();
-
-        //StartCoroutine(ResetMoveForwardSpeedAfterTime());
-
         IsDashing = true;
-        Rb2d.AddForce(transform.up * (MoveForwardSpeed - 10), ForceMode2D.Impulse);
+        UseDashMove = false;
+        Rb2d.AddForce(transform.up * DashSpeed * Time.deltaTime, ForceMode2D.Impulse);
     }
-
-    //private IEnumerator ResetMoveForwardSpeedAfterTime()
-    //{
-    //    yield return new WaitForSeconds(0.2f);
-
-    //    MoveForwardSpeed -= 50;
-    //}
 }

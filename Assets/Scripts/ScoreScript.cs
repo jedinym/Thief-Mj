@@ -11,10 +11,10 @@ public class ScoreScript : MonoBehaviour
     public int Score;
     //public int DfltScore;
 
-    public int SubstractScoreValue;
-    public float TimeToLowerSecs;
+    //public int SubstractScoreValue;
+    //public float TimeToLowerSecs;
 
-    bool IsRunningCoroutine = false;
+    //bool IsRunningCoroutine = false;
 
     private void Start()
     {
@@ -23,12 +23,8 @@ public class ScoreScript : MonoBehaviour
         ScoreText.text = "Score: " + Score.ToString();
     }
 
-    private void Update() //Use InvokeRepeating instead of Coroutine; Yay or Nay ???
+    private void Update() 
     {
-        if (!IsRunningCoroutine)
-            StartCoroutine(TimeLowerScore());
-
-
         Score = (Score < 0) ? 0 : Score;
 
         ScoreText.text = "Score: " + Score.ToString();
@@ -39,14 +35,14 @@ public class ScoreScript : MonoBehaviour
     //    Score -= SubstractScoreValue;
     //}
 
-    private IEnumerator TimeLowerScore()
-    {
-        IsRunningCoroutine = true;
+    //private IEnumerator TimeLowerScore()
+    //{
+    //    IsRunningCoroutine = true;
 
-        yield return new WaitForSeconds(TimeToLowerSecs);
+    //    yield return new WaitForSeconds(TimeToLowerSecs);
 
-        Score -= SubstractScoreValue;
+    //    Score -= SubstractScoreValue;
 
-        IsRunningCoroutine = false;
-    }
+    //    IsRunningCoroutine = false;
+    //}
 }
