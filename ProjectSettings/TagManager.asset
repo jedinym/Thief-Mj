@@ -18,6 +18,8 @@ TagManager:
   - Wave
   - AOE
   - SpawnSpot
+  - Vegetation
+  - Arrow
   layers:
   - Default
   - TransparentFX
@@ -34,8 +36,8 @@ TagManager:
   - Shield
   - Pickups
   - Foreground
-  - 
-  - 
+  - Attacks
+  - Obstacle
   - 
   - 
   - 

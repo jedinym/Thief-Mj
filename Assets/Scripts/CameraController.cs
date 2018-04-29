@@ -55,15 +55,10 @@ public class CameraController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        //transform.position = player.transform.position + offset;
-        //transform.rotation = player.transform.rotation;
-
         //*CAMERA STOPS BEFORE IT HITS THE BOUNDS OF SPRITE
         DesPos = new Vector3(playerTransform.position.x, playerTransform.position.y, transform.position.z);
-        DesPos.x = Mathf.Clamp(DesPos.x, leftBound, rightBound);
-        DesPos.y = Mathf.Clamp(DesPos.y, bottomBound, topBound);
-
-        //SmoothPos = Vector3.Lerp(transform.position, DesPos, SmoothSpeed * Time.deltaTime);
+        //DesPos.x = Mathf.Clamp(DesPos.x, leftBound, rightBound);
+        //DesPos.y = Mathf.Clamp(DesPos.y, bottomBound, topBound);
 
 
         transform.position = DesPos;

@@ -17,21 +17,31 @@ public class EnemyMovementController : MonoBehaviour {
     public GameObject Squirt;
     public GameObject Wave;
     public GameObject AOE;
+    public GameObject ArrowContainer;
 
     //public float followSharpness = 0.1f;
     //Vector3 FollowOffsetOnCircle;
-    public float InitShootTime; //= 0.0f;
-    public float NewShootOffsetTime;
-    public float NewShootOffsetPeriod;
-    public float MaxSpeedToAOE;
-    public float DistanceToAOE;
+    [SerializeField]
+    float InitShootTime; //= 0.0f;
+    [SerializeField]
+    float NewShootOffsetTime;
+    [SerializeField]
+    float NewShootOffsetPeriod;
+    [SerializeField]
+    float MaxSpeedToAOE;
+    [SerializeField]
+    float DistanceToAOE;
 
-    public float NewFollowOffsetTime; //= 0.0f;
-    public float NewFollowOffsetPeriod; // = 3f; //*seconds to re-calculate new position for thief
+    [SerializeField]
+    float NewFollowOffsetTime; //= 0.0f;
+    [SerializeField]
+    float NewFollowOffsetPeriod; // = 3f; //*seconds to re-calculate new position for thief
 
     Vector3 PlayerPositionWithOffset;
     public bool Idle;
-    public float SetIdleAfterAOESecs;
+
+    [SerializeField]
+    float SetIdleAfterAOESecs;
 
     //
     //private Rigidbody2D rb2d;
@@ -74,8 +84,42 @@ public class EnemyMovementController : MonoBehaviour {
         //pos.z = target.z;
         position.z = 0;
 
-        return position;
+        Collider2D[] hitCols = Physics2D.OverlapCircleAll(position, 0.1f);
+        if (hitCols.Length > 0)
+        {
+            print("Recalculate");
+            position = TargetPositionWithOffset(target);
+        }
 
+        //RaycastHit2D rch;
+
+        //rch = Physics2D.Raycast(transform.position, position, Vector2.Distance(transform.position, position));
+
+        //if (rch.collider != null)
+        //    position = TargetPositionWithOffset(target);
+
+        //if (!Physics.Raycast(transform.position, position, Vector2.Distance(transform.position, position)))
+        //{
+        //    return position;
+        //}
+
+
+        //if (Rigidbody.Sweep)
+
+        //if (Physics.Raycast(transform.position, position, Vector3.Distance(transform.position, position)))
+        //{
+        //    print("Oki");
+        //}
+
+        //RaycastHit2D[] rh;
+        //rh = Physics2D.RaycastAll(transform.position, position, Vector2.Distance(transform.position, position));
+        //if (rh.Length > 1)
+        //{
+        //    print("recalc");
+        //    position = TargetPositionWithOffset(target);
+        //}
+
+        return position;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,10 +165,12 @@ public class EnemyMovementController : MonoBehaviour {
                     //ShootWave();
                     //ShootAOE();
 
+                    //ShootArrows();
+
                     if (Vector3.Distance(Player.transform.position, transform.position) < DistanceToAOE && PlayerRb2D.velocity.magnitude < MaxSpeedToAOE)
                     {
                         ShootAOE();
-                        StartCoroutine(SetIdleC()); // After a set amount of seconds set Idle to false so the Enemy can move Again
+						StartCoroutine(SetIdleC()); // After a set amount of seconds set Idle to false so the Enemy can move Again
                     }
                     else if (PlayerRb2D.velocity.magnitude < MaxSpeedToAOE)
                     {
@@ -138,40 +184,46 @@ public class EnemyMovementController : MonoBehaviour {
                 NewShootOffsetTime += NewShootOffsetPeriod;
             }
 
-            //*modify thief's offset every x seconds
-            if (!Idle)
-            {
+            if (Idle)
+                Rb2D.constraints = RigidbodyConstraints2D.FreezePosition; // Enemy is unmovable while using AOE attack
+            else if (!Idle)
                 Rb2D.constraints = RigidbodyConstraints2D.None;
 
-                if (Time.time > NewFollowOffsetTime)
-                {
-                    PlayerPositionWithOffset = TargetPositionWithOffset(Player.transform.position);
 
-                    targetAngle = GetAngleBetweenVectors(PlayerPositionWithOffset, transform.position);
-                    //print("Target" + targetAngle);
+            //*modify thief's offset every x seconds
+            //if (!Idle)
+            //{
+            //    Rb2D.constraints = RigidbodyConstraints2D.None;
 
-                    //*increment time
-                    NewFollowOffsetTime += NewFollowOffsetPeriod;
-                }
+            //    if (Time.time > NewFollowOffsetTime)
+            //    {
+            //        PlayerPositionWithOffset = TargetPositionWithOffset(Player.transform.position);
 
-                currentAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, 90f * Time.deltaTime);
-                //currentAngle = Mathf.MoveTowards(currentAngle, targetAngle, 90f * Time.deltaTime);
-                //print("Current" + currentAngle);
+            //        targetAngle = GetAngleBetweenVectors(PlayerPositionWithOffset, transform.position);
+            //        //print("Target" + targetAngle);
 
-                if (currentAngle != targetAngle)
-                {
-                    transform.position += (PlayerPositionWithOffset - transform.position) * Time.deltaTime;
-                    transform.position += Quaternion.Euler(0, 0, currentAngle) * Vector3.left * 0.3f * Time.deltaTime;
-                }
-                else
-                    transform.position += (PlayerPositionWithOffset - transform.position) * Time.deltaTime;
-            }
-            else
-            {
-                Rb2D.constraints = RigidbodyConstraints2D.FreezePosition; // Enemy is unmovable while using AOE attack
-            }
+            //        //*increment time
+            //        NewFollowOffsetTime += NewFollowOffsetPeriod;
+            //    }
 
-            transform.rotation = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90); // Maintain orientation even while Idling
+            //    currentAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, 90f * Time.deltaTime);
+            //    //currentAngle = Mathf.MoveTowards(currentAngle, targetAngle, 90f * Time.deltaTime);
+            //    //print("Current" + currentAngle);
+
+            //    if (currentAngle != targetAngle)
+            //    {
+            //        transform.position += (PlayerPositionWithOffset - transform.position) * Time.deltaTime;
+            //        transform.position += Quaternion.Euler(0, 0, currentAngle) * Vector3.left * 0.3f * Time.deltaTime;
+            //    }
+            //    else
+            //        transform.position += (PlayerPositionWithOffset - transform.position) * Time.deltaTime;
+            //}
+            //else
+            //{
+            //    Rb2D.constraints = RigidbodyConstraints2D.FreezePosition; // Enemy is unmovable while using AOE attack
+            //}
+
+            //transform.rotation = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90); // Maintain orientation even while Idling
         }
     }
 
@@ -182,6 +234,8 @@ public class EnemyMovementController : MonoBehaviour {
         if (currentPosition != previousPosition) animator.SetTrigger(doBurstFwdHash); //*play engines burst forward animation
         previousPosition = currentPosition;
 
+
+        //transform.LookAt(Player.transform);
     }
 
     private void FixedUpdate()
@@ -205,10 +259,10 @@ public class EnemyMovementController : MonoBehaviour {
         //print("Squirt Shot!");
 
         //*calculate squirt rotation to point to ghost
-        Quaternion SquirtRotationInDegrees_z = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90);
+        Quaternion RotationInDegrees_z = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90);
 
         //*instantiate squirt in position and rotated
-        SquirtClone = Instantiate(Squirt, ThiefToGhostLerp, SquirtRotationInDegrees_z) as GameObject;
+        SquirtClone = Instantiate(Squirt, ThiefToGhostLerp, RotationInDegrees_z) as GameObject;
         //SquirtCloneRb2d = Instantiate(squirt, ThiefToGhostLerp, SquirtRotationInDegrees_z) as Rigidbody2D;
     }
 
@@ -220,9 +274,9 @@ public class EnemyMovementController : MonoBehaviour {
 
         Vector3 ThiefToGhostLerp = Vector3.Lerp(transform.position, Player.transform.position, ThiefToGhostLerpDistancePct / ((transform.position - Player.transform.position).magnitude));
 
-        Quaternion SquirtRotationInDegrees_z = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90);
+        Quaternion RotationInDegrees_z = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90);
 
-        WaveClone = Instantiate(Wave, ThiefToGhostLerp, SquirtRotationInDegrees_z) as GameObject;
+        WaveClone = Instantiate(Wave, ThiefToGhostLerp, RotationInDegrees_z) as GameObject;
         //Vector3 SquirtCloneToGhostNormal = (GhostGameObject.transform.position - SquirtClone.transform.position).normalized;
     }
 
@@ -232,6 +286,24 @@ public class EnemyMovementController : MonoBehaviour {
         GameObject AOEClone;
 
         AOEClone = Instantiate(AOE, transform.position, new Quaternion()) as GameObject;
+    }
+
+    private void ShootArrows()
+    {
+        Idle = true;
+        GameObject ArrowContainerClone;
+
+        float ThiefToGhostLerpDistancePct = 0.4f;
+
+        Vector3 ThiefToGhostLerp = Vector3.Lerp(transform.position, Player.transform.position, ThiefToGhostLerpDistancePct / ((transform.position - Player.transform.position).magnitude));
+
+        Quaternion RotationInDegrees_z = Quaternion.Euler(0f, 0f, GetAngleBetweenVectors(Player.transform.position, transform.position) - 90);
+
+        ArrowContainerClone = Instantiate(ArrowContainer, ThiefToGhostLerp, RotationInDegrees_z) as GameObject;
+
+        //Vector3 Offset = new Vector3(1f, 1f, 1f);
+
+        //ArrowContainerClone = Instantiate(ArrowContainer, (transform.position + Offset), new Quaternion());
     }
 
     IEnumerator SetIdleC()

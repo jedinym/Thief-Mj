@@ -416,7 +416,7 @@ MonoBehaviour:
   MoveForwardSpeed: 1500
   MoveBackwardSpeed: 5
   RotateSpeed: 300
-  DashSpeed: 200
+  DashSpeed: 1000
 --- !u!114 &114416390804044600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -429,6 +429,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreObj: {fileID: 1794286247557034, guid: 7743ddd74b9c20044a7433f1d80e0dc6, type: 2}
+  LenOfSlowDown: 0.5
+  SlowTimeSpeed: 0.5
 --- !u!212 &212030819452652090
 SpriteRenderer:
   m_ObjectHideFlags: 1
