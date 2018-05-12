@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 114335723680430764}
   - component: {fileID: 114112156568346510}
   - component: {fileID: 114570897444690978}
-  - component: {fileID: 114918428407096732}
+  - component: {fileID: 114385189214385192}
   m_Layer: 10
   m_Name: Enemy
   m_TagString: Enemy
@@ -389,10 +389,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 2
-  repathRate: 2
+  repathRate: 0.1
   canSearch: 1
   canMove: 1
-  maxSpeed: 12.37
+  maxSpeed: 7.87
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -407,7 +407,21 @@ MonoBehaviour:
   endReachedDistance: 0.2
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 0
-  whenCloseToDestination: 1
+  whenCloseToDestination: 0
+--- !u!114 &114385189214385192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1061096690767980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05438d6655387484bb67890c21fc0bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 1452093159325650, guid: 0935aed5f2122c441b514391edf0bd99, type: 2}
+  DistanceToAOE: 2.5
+  MaxSpeedToAOE: 5
 --- !u!114 &114570897444690978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -420,19 +434,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  target: {fileID: 0}
+  target: {fileID: 4884055664547178, guid: 3ff46784bfda3a2489069c0eeb847869, type: 2}
 --- !u!114 &114804826366065146
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1061096690767980}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75230bfebef25d2428ba54841cfa91e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  Player: {fileID: 1452093159325650, guid: 0935aed5f2122c441b514391edf0bd99, type: 2}
   Squirt: {fileID: 1155243371983388, guid: e326b076b74c5764dadb55feb775cffd, type: 2}
   Wave: {fileID: 1639862218413746, guid: 0a55bf3d7cd497747a3a1e9a9255116d, type: 2}
   AOE: {fileID: 1130302233774148, guid: fc36f2bfa33c3734dbe4e5d725999666, type: 2}
@@ -447,18 +461,6 @@ MonoBehaviour:
   NewFollowOffsetPeriod: 2
   Idle: 0
   SetIdleAfterAOESecs: 1
---- !u!114 &114918428407096732
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1061096690767980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59b717f6dc4967549b161269e42071e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
 --- !u!212 &212221656263261642
 SpriteRenderer:
   m_ObjectHideFlags: 1
