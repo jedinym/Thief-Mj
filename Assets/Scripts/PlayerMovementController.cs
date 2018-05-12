@@ -42,7 +42,7 @@ public class PlayerMovementController : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         InputForward = Input.GetAxisRaw("Vertical"); //Forward and backwards
         InputRotate = Input.GetAxisRaw("Horizontal"); //Rotation 
         if (Input.GetButtonDown("Dash")) //Dashing
@@ -61,6 +61,8 @@ public class PlayerMovementController : MonoBehaviour {
                     Time.timeScale = 1;
             }
         }
+
+        
 
         if (IsDashing && Rb2d.velocity.magnitude < 9f)
             IsDashing = false;
@@ -126,4 +128,10 @@ public class PlayerMovementController : MonoBehaviour {
         UseDashMove = false;
         Rb2d.AddForce(transform.up * DashSpeed * Time.deltaTime, ForceMode2D.Impulse);
     }
+
+    //private void Teleport()
+    //{
+    //    Time.timeScale = 0.1f;
+    //    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    //}
 }

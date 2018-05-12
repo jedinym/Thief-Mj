@@ -19,8 +19,9 @@ public class WaveFly : MonoBehaviour
 
         Rb2d.AddForce(transform.up * 400);
 
-        //LasPos = transform.position;
         Invoke("DestroyWave", TimeToDestroy);
+
+        InvokeRepeating("ScaleWave", 0f, 0.02f);
     }
 
     private void Update()
@@ -37,9 +38,11 @@ public class WaveFly : MonoBehaviour
         //transform.localScale = Vector3.Scale(new Vector3(DistanceTraveled, DistanceTraveled, DistanceTraveled), transform.localScale);
 
         //transform.lossyScale.Scale(new Vector3(5, 5, 5));
+    }
 
+    private void ScaleWave()
+    {
         transform.localScale += new Vector3(ScaleMultiplier, ScaleMultiplier, ScaleMultiplier);
-
     }
 
     private void DestroyWave()

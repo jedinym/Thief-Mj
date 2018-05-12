@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOverScript : MonoBehaviour
+public class GameOverScript : MonoBehaviour //FIX THIS;
 {
     public GameObject Score;
     ScoreScript ScoreScript;
