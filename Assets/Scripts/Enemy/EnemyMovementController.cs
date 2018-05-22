@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnemyMovementController : MonoBehaviour {
-
+public class EnemyMovementController : MonoBehaviour
+{
     public GameObject Player;
     Rigidbody2D PlayerRb2D;
 
@@ -60,6 +60,10 @@ public class EnemyMovementController : MonoBehaviour {
     //*
     private float currentAngle;
     private float targetAngle;
+
+    public Attack NextAttackInQueue;
+
+    NextAttackEvaluation NextAttackEvalSc;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,7 +137,7 @@ public class EnemyMovementController : MonoBehaviour {
         //rb2d = GetComponent<Rigidbody2D>();
 
         //*
-        PlayerPositionWithOffset = TargetPositionWithOffset(Player.transform.position);
+        //PlayerPositionWithOffset = TargetPositionWithOffset(Player.transform.position);
 
         //float currentAngle = GetAngleBetweenVectors(GhostPositionWithOffset, transform.position);
 
@@ -149,6 +153,8 @@ public class EnemyMovementController : MonoBehaviour {
         PlayerRb2D = Player.GetComponent<Rigidbody2D>();
         //*squirt shooting
         //InvokeRepeating("ShootSquirt", 3, 2f);
+
+        NextAttackEvalSc = GetComponent<NextAttackEvaluation>();
     }
 	
 	// Update is called once per frame
@@ -167,18 +173,35 @@ public class EnemyMovementController : MonoBehaviour {
 
                     //ShootArrows();
 
-                    if (Vector3.Distance(Player.transform.position, transform.position) < DistanceToAOE && PlayerRb2D.velocity.magnitude < MaxSpeedToAOE)
+                    NextAttackInQueue = NextAttackEvalSc.GetNextAttack();
+
+                    //print(NextAttackInQueue.ValueString);
+
+                    if (NextAttackInQueue != null)
                     {
-                        ShootAOE();
-						StartCoroutine(SetIdleC()); // After a set amount of seconds set Idle to false so the Enemy can move Again
-                    }
-                    else if (PlayerRb2D.velocity.magnitude < MaxSpeedToAOE)
-                    {
-                        ShootWave();
-                    }
-                    else
-                    {
-                        ShootSquirt();
+                        switch (NextAttackInQueue.ValueString)
+                        {
+                            case "AOE":
+                                ShootAOE();
+                                StartCoroutine(SetIdleC());
+                                NextAttackInQueue = null;
+                                break;
+
+                            case "Wave":
+                                ShootWave();
+                                NextAttackInQueue = null;
+                                break;
+
+                            case "Squirt":
+                                ShootSquirt();
+                                NextAttackInQueue = null;
+                                break;
+
+                            case "Arrow":
+                                ShootArrows();
+                                NextAttackInQueue = null;
+                                break;
+                        }
                     }
                 }
                 NewShootOffsetTime += NewShootOffsetPeriod;

@@ -304,7 +304,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!60 &60116470686041074
 PolygonCollider2D:
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a3d26fd0e85c64eab117a04fe8322e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreObj: {fileID: 1794286247557034, guid: 7743ddd74b9c20044a7433f1d80e0dc6, type: 2}
+  ScoreObj: {fileID: 0}
   LenOfSlowDown: 0.5
   SlowTimeSpeed: 0.5
 --- !u!212 &212030819452652090

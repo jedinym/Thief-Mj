@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -399,27 +401,28 @@
     <Compile Include="Assets\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
     <Compile Include="Assets\AstarPathfindingProject\Utilities\RetainedGizmos.cs" />
     <Compile Include="Assets\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
-    <Compile Include="Assets\Scripts\AOEScript.cs" />
-    <Compile Include="Assets\Scripts\ArrowContainerScript.cs" />
-    <Compile Include="Assets\Scripts\ArrowScript.cs" />
-    <Compile Include="Assets\Scripts\CalcOffset.cs" />
+    <Compile Include="Assets\Scripts\AttackScripts\AOE\AOEScript.cs" />
+    <Compile Include="Assets\Scripts\AttackScripts\Arrow\ArrowContainerScript.cs" />
+    <Compile Include="Assets\Scripts\AttackScripts\Arrow\ArrowScript.cs" />
+    <Compile Include="Assets\Scripts\AttackScripts\Squirt\SquirtAttractor.cs" />
+    <Compile Include="Assets\Scripts\AttackScripts\Wave\WaveFly.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CanBeAttracted.cs" />
     <Compile Include="Assets\Scripts\DamageVals.cs" />
     <Compile Include="Assets\Scripts\DestroyOnWall.cs" />
-    <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyMovementController.cs" />
+    <Compile Include="Assets\Scripts\Enemy\NextAttackEvaluation.cs" />
     <Compile Include="Assets\Scripts\GameOverScript.cs" />
     <Compile Include="Assets\Scripts\GhostCollisionController.cs" />
     <Compile Include="Assets\Scripts\GlobalVariables.cs" />
-    <Compile Include="Assets\Scripts\LimitSpeed.cs" />
     <Compile Include="Assets\Scripts\LookAtPlayer.cs" />
     <Compile Include="Assets\Scripts\PickupsHullController.cs" />
     <Compile Include="Assets\Scripts\PickupsShellController.cs" />
-    <Compile Include="Assets\Scripts\PlayerMovementController.cs" />
+    <Compile Include="Assets\Scripts\Player\CalcOffset.cs" />
+    <Compile Include="Assets\Scripts\Player\LimitSpeed.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMovementController.cs" />
     <Compile Include="Assets\Scripts\ScoreScript.cs" />
     <Compile Include="Assets\Scripts\SelfDestructOnCollide.cs" />
-    <Compile Include="Assets\Scripts\SquirtAttractor.cs" />
-    <Compile Include="Assets\Scripts\WaveFly.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.cginc" />
